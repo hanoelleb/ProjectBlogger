@@ -10,35 +10,39 @@ import Dashboard from '../Dashboard';
 import Home from '../Home';
 
 import * as ROUTES from '../../constants/routes';
+import {withFirebase} from '../../firebase';
 
 class App extends React.Component {
    constructor(props) {
        super(props);
-
        this.state = ({authUser: null});
    }
 
    componentDidMount() {
-      this.props.firebase.auth.onAuthStateChanged(authUser => {
-      authUser
-        ? this.setState({ authUser })
-        : this.setState({ authUser: null });
-    });
+      this.listener = this.props.firebase.auth.onAuthStateChanged( user => {
+	  console.log('user: ' + user);
+          user ? this.setState({authUser: user}) : this.setState({authUser: null})
+      });
+   }
+
+   componentWillUnmount() {
+      this.listener();
    }
 
    render() {
-     (
+     console.log('auth: ' + this.state.authUser);
+     return (
        <div>
            <h1>App</ h1>
            <Router>
-               <Navigation authUser={this.state.authUser}>
+               <Navigation authUser={this.state.authUser} />
 	       <Route exact path={ROUTES.LANDING} component={Landing} />
                <Route path={ROUTES.SIGN_UP} component={SignUp} />
 	       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
-           </ Router>
+           </Router>
       </ div>
      )
    }
 }
- 
-export default App;
+
+export default withFirebase(App);

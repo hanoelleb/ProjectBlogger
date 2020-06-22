@@ -4,8 +4,13 @@ import { Link } from 'react-router-dom';
 import SignOut from '../SignOut';
 import * as ROUTES from '../../constants/routes';
  
-const Navigation = ({authuser}) => (
-    <div>{authUser ? <NavAuth /> : <NavNonAuth />}</div>
+const Navigation = ({authUser}) => (
+    <div>{authUser ? 
+	    <div>
+	        <NavAuth /> 
+	    </div>
+	    : <NavNonAuth />}
+    </div>
 );
 
 const NavAuth = () => (
