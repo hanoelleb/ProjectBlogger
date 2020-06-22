@@ -13,14 +13,29 @@ const Landing = () => (
 );
 
 class SignInForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSignIn = this.handleSignIn.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = ({email: '', password: '', error: null});
+    }
+
+    handleSignIn() {
+    }
+
+    handleChange(event) {
+        this.setState( {[event.target.name]: event.target.value});
+    }
+
     render() {
         return (
-             <form>
+             <form onSubmit = {this.handleSignIn}>
                  <h3>Sign In</h3>
                  <input type='email' placeholder='Email'></input>
                  <input type='text' placeholder='Username'></input>
                  <input type='password' placeholder='Password'></input>
 		 <input type='submit' value='Sign in'></input>
+		 {this.state.error && <p>{this.state.error.message}</p>}
              </form>
 	);
     }
