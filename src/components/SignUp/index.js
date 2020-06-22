@@ -7,6 +7,9 @@ import * as ROUTES from '../../constants/routes';
 const SignUp = () => (
     <div>
         <SignUpForm />
+	<h6>Already have an account? 
+	    <Link to={ROUTES.LANDING}> Sign in!</Link>
+	</h6>
     </div>
 )
 

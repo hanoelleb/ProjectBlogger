@@ -11,16 +11,34 @@ import Home from '../Home';
 
 import * as ROUTES from '../../constants/routes';
 
-const App = () => (
-  <div>
-    <h1>App</ h1>
-    <Router>
-        <Navigation />
-	<Route exact path={ROUTES.LANDING} component={Landing} />
-        <Route path={ROUTES.SIGN_UP} component={SignUp} />
-	<Route path={ROUTES.DASHBOARD} component={Dashboard} />
-    </ Router>
-  </ div>
-);
+class App extends React.Component {
+   constructor(props) {
+       super(props);
+
+       this.state = ({authUser: null});
+   }
+
+   componentDidMount() {
+      this.props.firebase.auth.onAuthStateChanged(authUser => {
+      authUser
+        ? this.setState({ authUser })
+        : this.setState({ authUser: null });
+    });
+   }
+
+   render() {
+     (
+       <div>
+           <h1>App</ h1>
+           <Router>
+               <Navigation authUser={this.state.authUser}>
+	       <Route exact path={ROUTES.LANDING} component={Landing} />
+               <Route path={ROUTES.SIGN_UP} component={SignUp} />
+	       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
+           </ Router>
+      </ div>
+     )
+   }
+}
  
 export default App;

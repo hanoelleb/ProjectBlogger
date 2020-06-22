@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
  
+import { withFirebase } from '../../firebase';
 import * as ROUTES from '../../constants/routes';
 
 const Landing = () => (
@@ -12,7 +13,7 @@ const Landing = () => (
   </div>
 );
 
-class SignInForm extends React.Component {
+class SignInFormBase extends React.Component {
     constructor(props) {
         super(props);
         this.handleSignIn = this.handleSignIn.bind(this);
@@ -20,7 +21,17 @@ class SignInForm extends React.Component {
         this.state = ({email: '', password: '', error: null});
     }
 
-    handleSignIn() {
+    handleSignIn(event) {
+        this.props.firebase
+            .doSignIn(this.state.email, this.state.password)
+	    .then(() => {
+	        this.setState({email: '', password: '', error: null});
+                this.props.history.push(ROUTES.DASHBOARD)
+	    })
+	    .catch(error => {
+	        this.setState({error});
+	    });
+       event.preventDefault();
     }
 
     handleChange(event) {
@@ -28,18 +39,22 @@ class SignInForm extends React.Component {
     }
 
     render() {
+	const isInvalid = this.state.password === '' || this.state.email === '';
         return (
              <form onSubmit = {this.handleSignIn}>
                  <h3>Sign In</h3>
-                 <input type='email' placeholder='Email'></input>
-                 <input type='text' placeholder='Username'></input>
-                 <input type='password' placeholder='Password'></input>
-		 <input type='submit' value='Sign in'></input>
+                 <input name='email' value={this.state.email} type='email' 
+		     placeholder='Email' onChange={this.handleChange}></input>
+                 <input name='password' value={this.state.password} type='password' 
+		     placeholder='Password' onChange={this.handleChange}></input>
+		 <input type='submit' disabled={isInvalid} value='Sign in'></input>
 		 {this.state.error && <p>{this.state.error.message}</p>}
              </form>
 	);
     }
 }
+
+const SignInForm = withRouter(withFirebase(SignInFormBase));
 
 export default Landing;
 
