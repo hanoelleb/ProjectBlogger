@@ -21,6 +21,21 @@ class SignInFormBase extends React.Component {
         this.state = ({email: '', password: '', error: null});
     }
 
+    componentDidMount() {
+      this.listener = this.props.firebase.auth.onAuthStateChanged(
+        authUser => {
+          if (authUser != null) {
+            this.props.history.push(ROUTES.DASHBOARD);
+          }
+        },
+      );
+    }
+
+    componentWillUnmount() {
+      this.listener();
+    }
+
+
     handleSignIn(event) {
         this.props.firebase
             .doSignIn(this.state.email, this.state.password)

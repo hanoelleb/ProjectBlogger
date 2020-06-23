@@ -34,6 +34,11 @@ const Dashboard = () => (
 	        {authUser => <PostForm user={authUser} />}
 	    </AuthUserContext.Consumer>
 	</div>
+	<div>
+	    <AuthUserContext.Consumer>
+	        {authUser => <Content user={authUser} />}
+            </AuthUserContext.Consumer>
+        </div>
     </div>
 );
 
@@ -47,15 +52,10 @@ class PostFormBase extends React.Component {
 
     handleSubmit(event) {
 	var sepTags = this.state.tags.split(',');
-        //this.props.firebase
 	var post = PostFactory(this.state.title, this.state.content, sepTags);
-	console.log('post title: ' + post.title);
-	console.log('post content: ' + post.content);
-	console.log('post tags: ' + post.tags);
-	//console.log(this.props.firebase);
-	//console.log(this.props.user);
-	this.props.firebase.posts(this.props.user.uid).set({title: post.title, content : post.content, content: post.tags})
-	     .then( () => {
+	
+	this.props.firebase.posts(this.props.user.uid).push({title: post.title, content : post.content, tags: post.tags})
+	    .then( () => {
                 this.setState({title: '', content: '', tags: ''});
             });
 	
@@ -79,6 +79,90 @@ class PostFormBase extends React.Component {
 }
 
 const PostForm = withFirebase(PostFormBase);
+
+
+//Holds all posts
+class ContentBase extends React.Component {
+    constructor(props) {
+        super(props);
+	this.state = ({
+	  user: null,
+          loading: false,
+          posts: [],
+	  waitingforposts: true
+        });
+    }
+
+   componentDidMount() {
+        this.authUser(this.props.firebase).then((user) => {
+	    this.setState({user: user});
+	    var posts = [];
+            var ref = this.props.firebase.posts(this.props.user.uid);
+            ref.once('value')
+                .then( (snapshot) => {
+                    snapshot.forEach( (childSnapshot) => {
+                        const childData = childSnapshot.val();
+                        const title = childData.title;
+                        const content = childData.content;
+                        const tags = childData.tags;
+                        var post = PostFactory(title,content,tags);
+                        posts.push(post);
+			this.setState({posts: posts});
+                   });
+               });
+
+               this.setState({waitingforposts: false});
+               this.setState({posts: posts});
+	       //console.log(posts);
+	})
+    }
+
+   authUser(firebase) {
+      return new Promise(function (resolve, reject) {
+        firebase.auth.onAuthStateChanged(function(user) {
+            if (user) {
+               resolve(user);
+               } else {
+                 reject('User not logged in');
+               }             
+           });
+       });
+    }
+
+    renderPost(post) {
+        return (
+	    <div key={post.title}>
+	        <h1>{post.title}</h1>
+	        <p>{post.content}</p>
+	        {post.tags.map( (tag,index) => this.addTag(tag,index))}
+	    </div>
+	)
+    }
+
+    addTag(tag,index) {
+        return <span key={index}>{tag}</span>
+    }
+
+    render() {
+	if (this.state.waitingforposts) {
+            return (
+	       <div>
+	           <h2>Your posts</h2>
+	       </div>
+	    )
+	} else {
+	    return (   
+	       <div id='Posts'>
+                   <h2>Your posts</h2>
+		   <h2>Getting...</h2>
+		   {this.state.posts.map( (post) => this.renderPost(post) )}
+               </div>
+	    )
+	}
+    }
+}
+
+const Content = withFirebase(ContentBase);
 
 const condition = authUser => !!authUser;
  
