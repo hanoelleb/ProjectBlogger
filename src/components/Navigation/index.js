@@ -22,6 +22,9 @@ const NavAuth = () => (
         <Link to={ROUTES.ACCOUNT}>Account</Link>
       </li>
       <li>
+	<Link to={ROUTES.DASHBOARD}>Dashboard</Link>
+      </li>
+      <li>
         <Link to={ROUTES.ADMIN}>Admin</Link>
       </li>
       <li>

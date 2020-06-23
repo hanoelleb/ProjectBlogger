@@ -8,6 +8,7 @@ import Landing from '../Landing';
 import SignUp from '../SignUp';
 import Dashboard from '../Dashboard';
 import Home from '../Home';
+import Account from '../Account';
 
 import * as ROUTES from '../../constants/routes';
 import {withFirebase} from '../../firebase';
@@ -41,6 +42,8 @@ class App extends React.Component {
 	           <Route exact path={ROUTES.LANDING} component={Landing} />
                    <Route path={ROUTES.SIGN_UP} component={SignUp} />
 	           <Route path={ROUTES.DASHBOARD} component={Dashboard} />
+	           <Route path={ROUTES.HOME} component={Home} />
+	           <Route path={ROUTES.ACCOUNT} component={Account} />
                </Router>
 	   </AuthUserContext.Provider>
       </ div>
