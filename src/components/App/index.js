@@ -12,6 +12,8 @@ import Home from '../Home';
 import * as ROUTES from '../../constants/routes';
 import {withFirebase} from '../../firebase';
 
+import { AuthUserContext } from '../Session';
+
 class App extends React.Component {
    constructor(props) {
        super(props);
@@ -30,16 +32,17 @@ class App extends React.Component {
    }
 
    render() {
-     console.log('auth: ' + this.state.authUser);
      return (
        <div>
            <h1>App</ h1>
-           <Router>
-               <Navigation authUser={this.state.authUser} />
-	       <Route exact path={ROUTES.LANDING} component={Landing} />
-               <Route path={ROUTES.SIGN_UP} component={SignUp} />
-	       <Route path={ROUTES.DASHBOARD} component={Dashboard} />
-           </Router>
+	   <AuthUserContext.Provider value={this.state.authUser}>
+               <Router>
+                   <Navigation />
+	           <Route exact path={ROUTES.LANDING} component={Landing} />
+                   <Route path={ROUTES.SIGN_UP} component={SignUp} />
+	           <Route path={ROUTES.DASHBOARD} component={Dashboard} />
+               </Router>
+	   </AuthUserContext.Provider>
       </ div>
      )
    }

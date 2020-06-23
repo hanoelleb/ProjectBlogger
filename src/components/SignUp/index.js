@@ -4,6 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../../firebase';
 import * as ROUTES from '../../constants/routes';
 
+import { AuthUserContext } from '../Session'
+
 const SignUp = () => (
     <div>
         <SignUpForm />
@@ -23,9 +25,18 @@ class SignUpFormBase extends React.Component {
 
     
     handleSignUp(event) {
+	const username = this.props.username;	
+	const email = this.props.email;
 	this.props.firebase
 	    .doCreateUser(this.state.email, this.state.password)
-	    .then( authUser => {
+	    .then(authUser => {
+		const email = this.state.email;
+		const username = this.state.username;
+		console.log('email: ' + email);
+                const id = authUser.user.uid;
+		return this.props.firebase.db.ref('users/' + id).set({email: email, username: username});
+            })
+            .then( () => {
                 this.setState({email: '', username: '', password: '', pwconfirm: '', error: null});
                 this.props.history.push(ROUTES.DASHBOARD);
 	    })
