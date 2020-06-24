@@ -9,7 +9,8 @@ import SignUp from '../SignUp';
 import Dashboard from '../Dashboard';
 import Home from '../Home';
 import Account from '../Account';
-
+import Explore from '../Explore';
+import Other from '../OtherBlog';
 import * as ROUTES from '../../constants/routes';
 import {withFirebase} from '../../firebase';
 
@@ -23,7 +24,6 @@ class App extends React.Component {
 
    componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged( user => {
-	  console.log('user: ' + user);
           user ? this.setState({authUser: user}) : this.setState({authUser: null})
       });
    }
@@ -44,6 +44,8 @@ class App extends React.Component {
 	           <Route path={ROUTES.DASHBOARD} component={Dashboard} />
 	           <Route path={ROUTES.HOME} component={Home} />
 	           <Route path={ROUTES.ACCOUNT} component={Account} />
+	           <Route path={ROUTES.EXPLORE} component={Explore} />
+	           <Route path={ROUTES.OTHERBLOG} component={Other} />
                </Router>
 	   </AuthUserContext.Provider>
       </ div>

@@ -18,7 +18,7 @@ const Dashboard = () => (
 	</div>
 	<div>
 	    <ul>
-	        <li>Explore</li>
+	        <li><Link to={ROUTES.EXPLORE}>Explore</Link></li>
                 <li>Messages</li>
                 <li>Followers</li>
                 <li>Notifications</li>
