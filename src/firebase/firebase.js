@@ -36,6 +36,8 @@ class Firebase {
   user = uid => this.db.ref('users/' + uid);
   users = () => this.db.ref('users');
   posts = uid => this.db.ref('users/'+uid+'/posts');
+  post = (uid, pid) => this.db.ref('users/'+uid+'/posts/'+pid);
+  likes = (uid, pid) => this.db.ref('users/'+uid+'/posts/'+pid+'/likes'); 
 }
 
 export default Firebase;

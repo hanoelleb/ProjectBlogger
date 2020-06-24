@@ -2,7 +2,8 @@
 import React from 'react';
 import {withFirebase} from '../../firebase';
 import  { FirebaseContext } from '../../firebase';
-
+import { AuthUserContext } from '../Session'
+ import { withAuthorization } from '../Session'
 import {PostFactory} from '../../models/Post';
 
 class Other extends React.Component {
@@ -18,13 +19,17 @@ class Other extends React.Component {
 
     renderContent() {
 	const userKey = this.props.location.state.key;
-	console.log('user: ' + userKey);
-        return (
-	    <FirebaseContext.Consumer>
-		{ firebase => {
-                    return <ContentBase userKey={userKey} firebase={firebase}/>;
-		} }
-	    </FirebaseContext.Consumer>
+	return (
+	    <AuthUserContext.Consumer>
+	    { authUser => {
+	        return (    
+		    <FirebaseContext.Consumer >
+	                {firebase => { return <ContentBase userKey={userKey} firebase={firebase} authUser={authUser}/> } }
+	            </FirebaseContext.Consumer>
+		)
+	        }
+	    }
+	    </AuthUserContext.Consumer>
 	)
     }
 
@@ -37,17 +42,6 @@ class Other extends React.Component {
 	    )
 	else
 	    return null;
-	/*
-	return (
-            <div>
-                <div>
-                <input type='text' placeholder='Search Soapbox'></input>
-            </div>
-            <div>
-                //<Content key={this.props.location.state.key}/>
-            </div>
-    </div>
-    */
    }
 }
 
@@ -55,6 +49,8 @@ class Other extends React.Component {
 class ContentBase extends React.Component {
     constructor(props) {
         super(props);
+	this.handleLike = this.handleLike.bind(this);
+	this.handleReblog = this.handleReblog.bind(this);
 	this.state = ({waiting: true, posts: []});
     }
 
@@ -69,21 +65,47 @@ class ContentBase extends React.Component {
                      const title = childData.title;
                      const content = childData.content;
                      const tags = childData.tags;
-		     console.log(title);
                      var post = PostFactory(title,content,tags);
-                     posts.push(post);
+                     posts.push([post,childSnapshot.key]);
                      this.setState({posts: posts});
 		});
 		this.setState({waiting: false});
 	    })
     }
 
+    handleLike(postId) {
+        console.log('in like');
+	const key = this.props.userKey;
+	var likes = this.props.firebase.likes(key,postId);
+	likes.once('value')
+	    .then( (snapshot) => {
+	        var likeNum = snapshot.val();
+		likeNum++;
+		var ref = this.props.firebase.post(key,postId);
+                ref.update({likes: likeNum});
+	    });
+    }
+
+    handleReblog(post) {
+       var src = this.props.firebase.user(this.props.userKey);
+       src.once('value')
+            .then( (snapshot) => {
+		var username = snapshot.val().username;
+                var repost = PostFactory(post.title, post.content, post.tags, username);
+		//console.log(repost.title);
+                var ref = this.props.firebase.posts(this.props.authUser.uid)
+		    .push({title: repost.title, content: repost.content, tags: repost.tags, src: username});
+            });
+    }
+
     renderPost(post) {
         return (
-            <div key={post.title}>
-                <h1>{post.title}</h1>
-                <p>{post.content}</p>
-                {post.tags.map( (tag,index) => this.addTag(tag,index))}
+            <div key={post[0].title}>
+                <h1>{post[0].title}</h1>
+                <p>{post[0].content}</p>
+                {post[0].tags.map( (tag,index) => this.addTag(tag,index))}
+		<button onClick={() => this.handleLike(post[1])}>Like</button>
+		<button onClick={() => this.handleReblog(post[0])}>Reblog</button>
             </div>
         )
     }
@@ -106,5 +128,8 @@ class ContentBase extends React.Component {
 }
 
 //const Content = withFirebase(ContentBase);
+
+
+const condition = authUser => !!authUser;
 
 export default Other;
