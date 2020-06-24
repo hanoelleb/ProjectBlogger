@@ -28,10 +28,8 @@ class ExplorePageBase extends React.Component {
     }
 
     renderUserLink(userData) {
-         return <Link to={'/blog/' + userData[0]}>{userData[0]}</Link>
-	 //return <div><Link>{userData[0]}</Link></div>
-	 //console.log('data: ' + userData);
-	 //return <h5>hello</h5>
+	 var pathstr = '/blog/' + userData[0];
+         return <Link to={{pathname: pathstr, state: { key: userData[1] }}} >{userData[0]}</Link>
     }
 
     render() {
