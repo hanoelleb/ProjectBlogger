@@ -6,4 +6,7 @@ export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 export const DASHBOARD = '/dashboard';
 export const EXPLORE = '/explore';
+export const MESSAGES = '/messages';
+export const MESSAGE_SENT_NUM = '/messages/sent/:num';
+export const MESSAGE_REC_NUM = '/messages/received/:num';
 export const OTHERBLOG = '/blog/:username';

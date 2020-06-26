@@ -14,7 +14,7 @@ class Other extends React.Component {
 
     componentDidMount() {
          const aux = this.props.location.state;
-	 console.log(aux.key);
+	 //console.log(aux.key);
     }
 
     renderContent() {
@@ -66,7 +66,7 @@ class ContentBase extends React.Component {
                      const content = childData.content;
                      const tags = childData.tags;
                      var post = PostFactory(title,content,tags);
-                     posts.push([post,childSnapshot.key]);
+                     posts.push([post,childSnapshot.key,childData.likes]);
                      this.setState({posts: posts});
 		});
 		this.setState({waiting: false});
@@ -92,7 +92,6 @@ class ContentBase extends React.Component {
             .then( (snapshot) => {
 		var username = snapshot.val().username;
                 var repost = PostFactory(post.title, post.content, post.tags, username);
-		//console.log(repost.title);
                 var ref = this.props.firebase.posts(this.props.authUser.uid)
 		    .push({title: repost.title, content: repost.content, tags: repost.tags, src: username});
             });
@@ -104,7 +103,7 @@ class ContentBase extends React.Component {
                 <h1>{post[0].title}</h1>
                 <p>{post[0].content}</p>
                 {post[0].tags.map( (tag,index) => this.addTag(tag,index))}
-		<button onClick={() => this.handleLike(post[1])}>Like</button>
+		<button onClick={() => this.handleLike(post[1])}>{'Like: ' + post[2]}</button>
 		<button onClick={() => this.handleReblog(post[0])}>Reblog</button>
             </div>
         )
@@ -120,6 +119,8 @@ class ContentBase extends React.Component {
 	else {
             return (
 	        <div>
+		    <button onClick={this.handleMessage}>Send Message</button>
+		    <MessageForm firebase={this.props.firebase} authUser={this.props.authUser} otherUser={this.props.userKey}/>
 		    {this.state.posts.map( (post) => this.renderPost(post) )}
 	        </div>
 	    )
@@ -127,8 +128,44 @@ class ContentBase extends React.Component {
     }
 }
 
-//const Content = withFirebase(ContentBase);
+class MessageForm extends React.Component {
+    constructor(props) {
+        super(props);
+	this.handleSubmit = this.handleSubmit.bind(this);
+	this.handleChange = this.handleChange.bind(this);
+	this.state = ({message: ''});
+    }
 
+    handleSubmit(event) {
+	event.preventDefault();
+        const message = this.state.message;
+
+	var sendMessage = this.props.firebase.messageReceived(this.props.otherUser);
+        sendMessage.push({message: message});
+
+	var saveMessage = this.props.firebase.messageSent(this.props.authUser.uid);
+	saveMessage.push({message: message})
+            .then( () => {
+		this.setState({message: ''});
+	    });
+       //event.preventDefault();
+    }
+
+    handleChange(event) {
+	this.setState({ [event.target.name]: event.target.value});
+    }
+
+    render() {
+	const invalid = this.state.message === '';
+
+        return (
+	    <form onSubmit={this.handleSubmit}>
+                <textarea name='message' placeholder='Enter message' onChange={this.handleChange}></textarea>
+		<input type='submit' value='Send' disabled={invalid}></input>
+	    </form>
+	)
+    }
+}
 
 const condition = authUser => !!authUser;
 

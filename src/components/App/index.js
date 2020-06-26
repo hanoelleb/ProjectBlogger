@@ -10,6 +10,8 @@ import Dashboard from '../Dashboard';
 import Home from '../Home';
 import Account from '../Account';
 import Explore from '../Explore';
+import {Messages} from '../Messages';
+import {Message} from '../Messages';
 import Other from '../OtherBlog';
 import * as ROUTES from '../../constants/routes';
 import {withFirebase} from '../../firebase';
@@ -45,6 +47,9 @@ class App extends React.Component {
 	           <Route path={ROUTES.HOME} component={Home} />
 	           <Route path={ROUTES.ACCOUNT} component={Account} />
 	           <Route path={ROUTES.EXPLORE} component={Explore} />
+	           <Route path={ROUTES.MESSAGES} component={Messages} />
+                   <Route path={ROUTES.MESSAGE_SENT_NUM} component={Message} />
+	           <Route path={ROUTES.MESSAGE_REC_NUM} component={Message} />
 	           <Route path={ROUTES.OTHERBLOG} component={Other} />
                </Router>
 	   </AuthUserContext.Provider>

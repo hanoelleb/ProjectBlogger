@@ -19,7 +19,7 @@ const Dashboard = () => (
 	<div>
 	    <ul>
 	        <li><Link to={ROUTES.EXPLORE}>Explore</Link></li>
-                <li>Messages</li>
+                <li><Link to={ROUTES.MESSAGES}>Messages</Link></li>
                 <li>Followers</li>
                 <li>Notifications</li>
                 <li>Settings</li>
@@ -105,7 +105,8 @@ class ContentBase extends React.Component {
                         const title = childData.title;
                         const content = childData.content;
                         const tags = childData.tags;
-                        var post = PostFactory(title,content,tags);
+			const src = childData.src;
+                        var post = PostFactory(title,content,tags,src);
                         posts.push(post);
 			this.setState({posts: posts});
                    });
@@ -133,6 +134,7 @@ class ContentBase extends React.Component {
         return (
 	    <div key={post.title}>
 	        <h1>{post.title}</h1>
+		{ post.src ? <h3>src: {post.src}</h3> : null }
 	        <p>{post.content}</p>
 	        {post.tags.map( (tag,index) => this.addTag(tag,index))}
 	    </div>
@@ -154,7 +156,6 @@ class ContentBase extends React.Component {
 	    return (   
 	       <div id='Posts'>
                    <h2>Your posts</h2>
-		   <h2>Getting...</h2>
 		   {this.state.posts.map( (post) => this.renderPost(post) )}
                </div>
 	    )
