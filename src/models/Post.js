@@ -1,6 +1,6 @@
 
-const PostFactory = (title, content, tags, src='', date) => {
-    return {title, content, tags, date, src};
+const PostFactory = (title, content, tags, src='', srckey='', date) => {
+    return {title, content, tags, date, src, srckey};
 };
 
 export {PostFactory};

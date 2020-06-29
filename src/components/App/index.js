@@ -47,7 +47,7 @@ class App extends React.Component {
 	           <Route path={ROUTES.HOME} component={Home} />
 	           <Route path={ROUTES.ACCOUNT} component={Account} />
 	           <Route path={ROUTES.EXPLORE} component={Explore} />
-	           <Route path={ROUTES.MESSAGES} component={Messages} />
+	           <Route exact path={ROUTES.MESSAGES} component={Messages} />
                    <Route path={ROUTES.MESSAGE_SENT_NUM} component={Message} />
 	           <Route path={ROUTES.MESSAGE_REC_NUM} component={Message} />
 	           <Route path={ROUTES.OTHERBLOG} component={Other} />

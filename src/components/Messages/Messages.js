@@ -2,6 +2,7 @@ import React from 'react';
 import {withAuthorization} from '../Session';
 import {AuthUserContext} from '../Session';
 import {Link} from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
 
 const Messages = () => (
     <AuthUserContext.Consumer>
@@ -45,7 +46,6 @@ class MessagesPageBase extends React.Component {
     }
     
     renderSentLinks(message) {
-	console.log('sent key: ' + message[1]);
         return <Link to={ {pathname: '/messages/sent/' + message[0], state : { key : message[1], sent: true }} }>{ 'message ' + message[0]}</Link>
     }
     
@@ -58,6 +58,7 @@ class MessagesPageBase extends React.Component {
     render () {
         return (
 	    <div>
+		<Link to={ROUTES>MESSAGES} {pat
 	        <h1>Received</h1>
 		{this.state.received.map( (message) => this.renderReceivedLinks(message)) }
 	        <h1>Sent</h1>

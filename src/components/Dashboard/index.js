@@ -106,7 +106,8 @@ class ContentBase extends React.Component {
                         const content = childData.content;
                         const tags = childData.tags;
 			const src = childData.src;
-                        var post = PostFactory(title,content,tags,src);
+			const srckey = childData.srckey;
+                        var post = PostFactory(title,content,tags,src,srckey);
                         posts.push(post);
 			this.setState({posts: posts});
                    });
@@ -130,11 +131,18 @@ class ContentBase extends React.Component {
        });
     }
 
+    renderBlogLink(username, key) {
+	var pathstr = '/blog/' + username;
+        return (
+	    <Link to={ {pathname: pathstr, state: {key: key}} }>{username}</Link>
+	)
+    }
+
     renderPost(post) {
         return (
 	    <div key={post.title}>
 	        <h1>{post.title}</h1>
-		{ post.src ? <h3>src: {post.src}</h3> : null }
+		{ post.src ? <h3>src: {this.renderBlogLink(post.src, post.srckey)}</h3> : null }
 	        <p>{post.content}</p>
 	        {post.tags.map( (tag,index) => this.addTag(tag,index))}
 	    </div>

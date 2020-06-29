@@ -93,8 +93,12 @@ class ContentBase extends React.Component {
 		var username = snapshot.val().username;
                 var repost = PostFactory(post.title, post.content, post.tags, username);
                 var ref = this.props.firebase.posts(this.props.authUser.uid)
-		    .push({title: repost.title, content: repost.content, tags: repost.tags, src: username});
+		    .push({title: repost.title, content: repost.content, tags: repost.tags, src: username, srckey: this.props.userKey});
             });
+    }
+
+    handleMessage() {
+    
     }
 
     renderPost(post) {
@@ -107,7 +111,7 @@ class ContentBase extends React.Component {
 		<button onClick={() => this.handleReblog(post[0])}>Reblog</button>
             </div>
         )
-    }
+    } 
 
     addTag(tag,index) {
         return <span key={index}>{tag}</span>
@@ -141,14 +145,35 @@ class MessageForm extends React.Component {
         const message = this.state.message;
 
 	var sendMessage = this.props.firebase.messageReceived(this.props.otherUser);
-        sendMessage.push({message: message});
+
+	var authUserName = this.props.firebase.user(this.props.authUser.uid);
+        authUserName.once('value')
+	    .then( (snapshot) => {
+	         var username = snapshot.val().username;
+                 sendMessage.push({message: message, from: username, key: this.props.authUser.uid});
+	    });
 
 	var saveMessage = this.props.firebase.messageSent(this.props.authUser.uid);
-	saveMessage.push({message: message})
+
+	var otherUserName = this.props.firebase.user(this.props.otherUser);
+	otherUserName.once('value')
+	    .then( (snapshot) => {
+	          var username = snapshot.val().username;
+		  saveMessage.push({message: message, to: username, key: this.props.otherUser});
+	    })
+	    .then ( () => {
+	        this.setState({message: ''})
+	    });
+       /*
+        sendMessage.push({message: message, from: this.props.authUser.uid});
+
+	var saveMessage = this.props.firebase.messageSent(this.props.authUser.uid);
+	saveMessage.push({message: message, to: this.props.otherUser})
             .then( () => {
 		this.setState({message: ''});
 	    });
-       //event.preventDefault();
+       event.preventDefault();
+       */
     }
 
     handleChange(event) {
@@ -160,7 +185,7 @@ class MessageForm extends React.Component {
 
         return (
 	    <form onSubmit={this.handleSubmit}>
-                <textarea name='message' placeholder='Enter message' onChange={this.handleChange}></textarea>
+                <textarea name='message' placeholder='Enter message' value={this.state.message} onChange={this.handleChange}></textarea>
 		<input type='submit' value='Send' disabled={invalid}></input>
 	    </form>
 	)

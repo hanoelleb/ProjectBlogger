@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { withAuthorization } from '../Session';
 import { AuthUserContext } from '../Session';
+
 
 class Message extends React.Component {
     constructor(props) {
@@ -26,7 +28,7 @@ class Message extends React.Component {
 class MessagePageBase extends React.Component {
     constructor(props) {
         super(props);
-	this.state = ({message: ''});
+	this.state = ({message: '', user: '', key: ''});
     }
 
     componentDidMount() {
@@ -36,7 +38,7 @@ class MessagePageBase extends React.Component {
 		.then( (snapshot) => {
 		    var data = snapshot.val();
 		    console.log(data.message);
-		    this.setState({message: data.message});
+		    this.setState({message: data.message, user: data.to, key: data.key});
 		});
 	}
 	else {
@@ -45,21 +47,48 @@ class MessagePageBase extends React.Component {
                 .then( (snapshot) => {
                     var data = snapshot.val();
                     console.log(data.message);
-                    this.setState({message: data.message});
+                    this.setState({message: data.message, user: data.from, key: data.key});
                 });
 	}
     }
 
+    renderLink() {
+	var pathstr = '/blog/' + this.state.user;
+	return (
+	    <Link to={{pathname: pathstr, state: { key: this.state.key }}}> {this.state.user} </Link>
+	)
+    }
+
     renderMessage() {
-        return <p>{this.state.message}</p>
+	var pathstr = '/blog/' + this.state.user;
+	var link = this.renderLink();
+        if (this.props.isSent) {
+            return (
+		<div>
+		    <h3>To:
+		        {this.renderLink()}
+		    </h3>
+                    <p>{this.state.message}</p>
+		</div>
+	    )
+	}
+	else {
+            return (
+		 <div>
+	              <h3>From: 
+		          {this.renderLink()}
+		      </h3>
+		      <p>{this.state.message}</p>
+		 </div>
+	    )
+	}
     }
 
     render() {
         return (
 	    <div>
-	        <h2>Message</h2>
-		{this.renderMessage()}
-            </div>
+	    {this.renderMessage()}
+	    </div>
 	)
     }
 }
