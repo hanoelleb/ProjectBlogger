@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { withAuthorization } from '../Session';
 import { AuthUserContext } from '../Session';
-
+import * as ROUTES from '../../constants/routes';
 
 class Message extends React.Component {
     constructor(props) {
@@ -87,6 +87,7 @@ class MessagePageBase extends React.Component {
     render() {
         return (
 	    <div>
+	    <Link to={ROUTES.MESSAGES}>Back to Messages</Link>
 	    {this.renderMessage()}
 	    </div>
 	)

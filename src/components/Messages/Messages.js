@@ -26,7 +26,9 @@ class MessagesPageBase extends React.Component {
             .then( snapshot => {
                 snapshot.forEach( (message) => {
                     var key = message.key;
-		    sentList.push([sentId++, key]);
+		    var to = message.val().to;
+		    var date = message.val().date;
+		    sentList.push([sentId++, key, to, date]);
 		    this.setState({sent: sentList});
                 });
             });
@@ -38,20 +40,25 @@ class MessagesPageBase extends React.Component {
 	 received.once('value')
 	    .then( snapshot => {
 		snapshot.forEach( (message) => {
+		    //the key for the message
 		    var key = message.key;
-		    recList.push([recId++, key]);
+		    var from = message.val().from;
+		    var date = message.val().date;
+		    recList.push([recId++, key, from, date]);
                     this.setState({received: recList});
 		});
 	    });
     }
     
     renderSentLinks(message) {
-        return <Link to={ {pathname: '/messages/sent/' + message[0], state : { key : message[1], sent: true }} }>{ 'message ' + message[0]}</Link>
+        return <Link to={ {pathname: '/messages/sent/' + message[0], state : { key : message[1], sent: true }} }>
+	    { 'message to ' + message[2] + ' ' + message[3]}
+	</Link>
     }
     
     renderReceivedLinks(message) {
         return (<Link to={ {pathname: '/messages/received/' + message[0], state : { key : message[1], sent : false }} }>
-	           { 'message ' + message[0]}
+	           { 'message from ' + message[2] + ' ' + message[3]}
 	       </Link>)
     }
     
