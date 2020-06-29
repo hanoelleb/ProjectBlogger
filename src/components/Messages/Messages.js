@@ -58,7 +58,6 @@ class MessagesPageBase extends React.Component {
     render () {
         return (
 	    <div>
-		<Link to={ROUTES>MESSAGES} {pat
 	        <h1>Received</h1>
 		{this.state.received.map( (message) => this.renderReceivedLinks(message)) }
 	        <h1>Sent</h1>
