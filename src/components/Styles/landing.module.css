@@ -8,8 +8,14 @@
 .form {
     display: flex;
     flex-direction: column;
-    width: 33vw;
+    width: auto;
     background-color: white;
     align-items: center;
     border-radius: 5px;
+    color: black;
+    padding: 20px;
+}
+
+.form input {
+    margin: 5px;
 }
