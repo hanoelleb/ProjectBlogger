@@ -24,8 +24,6 @@ class FollowersPageBase extends React.Component {
 	ref.once('value')
 	    .then( (snapshot) => {
 		 snapshot.forEach( (follower) => {
-		 console.log(follower.val().username);
-		 console.log(follower.val().userkey);
                  followerList.push([follower.val().username, follower.val().userkey]);
 		 this.setState({followers: followerList});
 		 })
