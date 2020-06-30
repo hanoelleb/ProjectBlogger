@@ -15,9 +15,6 @@ import styles from '../Styles/blog.module.css';
 
 const Dashboard = () => (
     <div>
-	<div>
-	    <input type='text' placeholder='Search Soapbox'></input>
-	</div>
         < DashNav />
 	<div className={styles.postbuttons}>
                <NewPostButton />
@@ -147,7 +144,6 @@ class ContentBase extends React.Component {
 
                this.setState({waitingforposts: false});
                this.setState({posts: posts});
-	       //console.log(posts);
 	})
     }
 

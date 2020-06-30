@@ -1,0 +1,15 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 33vw;
+    background-color: white;
+    align-items: center;
+    border-radius: 5px;
+}

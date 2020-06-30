@@ -5,6 +5,7 @@ import styles from '../Styles/blog.module.css'
 
 const DashNav = () => (
         <div className={styles.nav}>
+	    <input type='text' placeholder='Search Soapbox'></input>
             <ul>
 	        <li><Link to={ROUTES.DASHBOARD}>Dashboard</Link></li>
                 <li><Link to={ROUTES.EXPLORE}>Explore</Link></li>

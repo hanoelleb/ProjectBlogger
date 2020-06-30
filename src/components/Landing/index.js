@@ -4,11 +4,13 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../../firebase';
 import * as ROUTES from '../../constants/routes';
 
+import styles from '../Styles/landing.module.css';
+
 const Landing = () => (
-  <div>
+  <div className = {styles.page}>
     <SignInForm />    
     <h6>Don't have an account? 
-	<Link to={ROUTES.SIGN_UP}> Sign up!</Link>
+	<Link to={ROUTES.SIGN_UP} style={{color: 'white'}}> Sign up!</Link>
     </h6>
   </div>
 );
@@ -56,7 +58,7 @@ class SignInFormBase extends React.Component {
     render() {
 	const isInvalid = this.state.password === '' || this.state.email === '';
         return (
-             <form onSubmit = {this.handleSignIn}>
+             <form className = {styles.form} onSubmit = {this.handleSignIn}>
                  <h3>Sign In</h3>
                  <input name='email' value={this.state.email} type='email' 
 		     placeholder='Email' onChange={this.handleChange}></input>

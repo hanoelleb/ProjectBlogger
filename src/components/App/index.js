@@ -44,7 +44,7 @@ class App extends React.Component {
    render() {
      return (
        <div className={styles.app}>
-           <h1>App</ h1>
+	   <h2>Soapbox</h2>
 	   <AuthUserContext.Provider value={this.state.authUser}>
                <Router>
                    <Navigation />
