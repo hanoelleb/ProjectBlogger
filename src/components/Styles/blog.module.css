@@ -2,9 +2,22 @@
     display: flex;
     flex-direction: column;
     width: 33vw;
-    position: absolute;
+    position: fixed;
     left: 33vw;
     top: 20vw;
+    background-color: white;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.textPostForm input {
+    width: 80%;
+    margin: 5px;
+}
+
+.textPostForm textarea {
+    width: 80%;
+    margin: 5px;
 }
 
 .imagePostForm {
@@ -14,7 +27,18 @@
 
 .postbuttons {
     display: flex;
+    width: 40vw;
     justify-content: center;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+}
+
+.postbuttons button {
+    background-color: transparent;
+    font-size: 100%;
+    border: none;
 }
 
 .tags {
@@ -24,7 +48,7 @@
 
 .post {
     background-color: white;
-    border-radius: 15px;
+    border-radius: 5px;
     color: black;
     width: 40vw;
     margin-bottom: 10px;

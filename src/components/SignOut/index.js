@@ -8,8 +8,15 @@ const SignOut = () => (
 
 class SignOutBase extends React.Component {
     render() {
+        const style = {
+	    color: 'white',
+            background: 'transparent',
+            border: 'none',
+            fontSize: '100%',
+	}
+
         return (
-	    <button onClick={this.props.firebase.doSignOut}>Sign Out</button>
+	    <button style={style} onClick={this.props.firebase.doSignOut}>Sign Out</button>
 	)
     }
 }

@@ -126,7 +126,7 @@ class ContentBase extends React.Component {
     renderPost(post) {
         return (
             <div className={styles.post} key={post[0].title}>
-                <h1>{post[0].title}</h1>
+                <h3>{post[0].title}</h3>
                 <p>{post[0].content}</p>
                 {post[0].tags.map( (tag,index) => this.addTag(tag,index))}
 		<button onClick={() => this.handleLike(post[1])}>{'Like: ' + post[2]}</button>
@@ -136,7 +136,7 @@ class ContentBase extends React.Component {
     } 
 
     addTag(tag,index) {
-        return <span className={styles.tags} key={index}>{tag}</span>
+        return <span className={styles.tags} key={index}>#{tag}</span>
     }
 
     render() {

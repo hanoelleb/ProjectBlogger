@@ -20,8 +20,11 @@ const Dashboard = () => (
 	</div>
         < DashNav />
 	<div className={styles.postbuttons}>
-            <button>Photo Post</button>
-	    <NewPostButton />
+               <NewPostButton />
+               <button style={{color: 'orange'}}>Photo</button>
+	       <button style={{color: 'green'}}>Video</button>
+	       <button style={{color: 'blue'}}>Audio</button>
+	       <button style={{color: 'purple'}}>Link</button>
         </div>
 	<div>
 	    <AuthUserContext.Consumer>
@@ -50,7 +53,7 @@ class NewPostButton extends React.Component {
     render() {
         return (
 	    <div>
-	        <button onClick={this.openForm}>Text Post</button>
+	        <button onClick={this.openForm} style={{color: 'red'}}>Text</button>
                 <div>
                     <AuthUserContext.Consumer>
                          {authUser => <PostForm user={authUser} on={this.state.on} handler={this.closeForm}/>}
@@ -170,7 +173,7 @@ class ContentBase extends React.Component {
     renderPost(post) {
         return (
 	    <div className={styles.post} key={post.title}>
-	        <h1>{post.title}</h1>
+	        <h3>{post.title}</h3>
 		{ post.src ? <h3>src: {this.renderBlogLink(post.src, post.srckey)}</h3> : null }
 	        <p>{post.content}</p>
 	        {post.tags.map( (tag,index) => this.addTag(tag,index))}
@@ -179,7 +182,7 @@ class ContentBase extends React.Component {
     }
 
     addTag(tag,index) {
-        return <span className={styles.tags} key={index}>{tag}</span>
+        return <span className={styles.tags} key={index}>#{tag}</span>
     }
 
     render() {
