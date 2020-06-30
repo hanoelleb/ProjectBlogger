@@ -3,13 +3,17 @@ import {Link} from 'react-router-dom';
 import {withAuthorization} from '../Session';
 import {AuthUserContext} from '../Session';
 import * as ROUTES from '../../constants/routes';
+import DashNav from '../DashNavigation';
 
 const Followers = () => (
-    <AuthUserContext.Consumer>
-        { authUser =>
-            <FollowersPage authUser={authUser}/>
-        }
-    </AuthUserContext.Consumer>
+    <div>
+	< DashNav />
+        <AuthUserContext.Consumer>
+            { authUser =>
+                <FollowersPage authUser={authUser}/>
+            }
+        </AuthUserContext.Consumer>
+    </div>
 )
 
 class FollowersPageBase extends React.Component {
