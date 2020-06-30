@@ -38,6 +38,8 @@ class Firebase {
   posts = uid => this.db.ref('users/'+uid+'/posts');
   post = (uid, pid) => this.db.ref('users/'+uid+'/posts/'+pid);
   likes = (uid, pid) => this.db.ref('users/'+uid+'/posts/'+pid+'/likes');
+  following = (uid) => this.db.ref('users/'+uid+'/following');
+  followers = (uid) => this.db.ref('users/'+uid+'/followers');
   messageReceived = (uid) => this.db.ref('users/'+uid+'/messages/received');
   messageSent = (uid) => this.db.ref('users/'+uid+'/messages/sent');
   messageNumReceived = (uid, mid) => this.db.ref('users/'+uid+'/messages/received/'+mid);

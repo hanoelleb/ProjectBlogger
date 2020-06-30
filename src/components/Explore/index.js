@@ -19,7 +19,6 @@ class ExplorePageBase extends React.Component {
 	    .then( (userIds) => {
 		 userIds.forEach( (user) => {
 		     var userData = user.val();
-	             console.log(userData.username + ' ' + user.key);
                      users.push([userData.username, user.key]);
 		 });
 	         this.setState({users: users});

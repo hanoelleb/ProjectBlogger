@@ -10,8 +10,11 @@ import Dashboard from '../Dashboard';
 import Home from '../Home';
 import Account from '../Account';
 import Explore from '../Explore';
+import Notifications from '../Notifications';
 import {Messages} from '../Messages';
 import {Message} from '../Messages';
+import {Followers} from '../Follow';
+import {Following} from '../Follow';
 import Other from '../OtherBlog';
 import * as ROUTES from '../../constants/routes';
 import {withFirebase} from '../../firebase';
@@ -43,7 +46,7 @@ class App extends React.Component {
                    <Navigation />
 	           <Route exact path={ROUTES.LANDING} component={Landing} />
                    <Route path={ROUTES.SIGN_UP} component={SignUp} />
-	           <Route path={ROUTES.DASHBOARD} component={Dashboard} />
+	           <Route exact path={ROUTES.DASHBOARD} component={Dashboard} />
 	           <Route path={ROUTES.HOME} component={Home} />
 	           <Route path={ROUTES.ACCOUNT} component={Account} />
 	           <Route path={ROUTES.EXPLORE} component={Explore} />
@@ -51,6 +54,9 @@ class App extends React.Component {
                    <Route path={ROUTES.MESSAGE_SENT_NUM} component={Message} />
 	           <Route path={ROUTES.MESSAGE_REC_NUM} component={Message} />
 	           <Route path={ROUTES.OTHERBLOG} component={Other} />
+	           <Route path={ROUTES.FOLLOWERS} component={Followers}/>
+	           <Route path={ROUTES.FOLLOWING} component={Following}/>
+	           <Route path={ROUTES.NOTIFICATIONS} component={Notifications}/>
                </Router>
 	   </AuthUserContext.Provider>
       </ div>

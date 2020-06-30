@@ -10,3 +10,6 @@ export const MESSAGES = '/messages';
 export const MESSAGE_SENT_NUM = '/messages/sent/:num';
 export const MESSAGE_REC_NUM = '/messages/received/:num';
 export const OTHERBLOG = '/blog/:username';
+export const FOLLOWERS = '/dashboard/followers';
+export const FOLLOWING = '/dashboard/following';
+export const NOTIFICATIONS = '/dashboard/notifications';

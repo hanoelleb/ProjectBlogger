@@ -1,4 +1,3 @@
-//so route would be /blogname
 import React from 'react';
 import {withFirebase} from '../../firebase';
 import  { FirebaseContext } from '../../firebase';
@@ -51,7 +50,8 @@ class ContentBase extends React.Component {
         super(props);
 	this.handleLike = this.handleLike.bind(this);
 	this.handleReblog = this.handleReblog.bind(this);
-	this.state = ({waiting: true, posts: []});
+	this.handleFollow = this.handleFollow.bind(this);
+	this.state = ({waiting: true, posts: [], user: ''});
     }
 
     componentDidMount() {
@@ -70,6 +70,13 @@ class ContentBase extends React.Component {
                      this.setState({posts: posts});
 		});
 		this.setState({waiting: false});
+	    })
+
+	var getUser = this.props.firebase.user(key);
+	getUser.once('value')
+	    .then( (snapshot) => {
+	          const data = snapshot.val();
+		  this.setState({user: data.username});
 	    })
     }
 
@@ -101,6 +108,25 @@ class ContentBase extends React.Component {
     
     }
 
+    handleFollow() {
+        //add to following for current user
+	var addToFollowing = this.props.firebase.following(this.props.authUser.uid).push({username: this.state.user, userkey: this.props.userKey}); 
+
+	//add to followers for user of this blog
+	//var addToFollowers = this.props.firebase.followers(this.props.userKey).push({username: this.props.authUser.uid, ;
+	//console.log(this.props.authUser);
+	
+	var addToFollowers = this.props.firebase.followers(this.props.userKey);;
+        
+	var getUser = this.props.firebase.user(this.props.authUser.uid);
+	const authKey = this.props.authUser.uid;
+	getUser.once('value')
+	    .then( (snapshot) => {
+	        var user = snapshot.val().username;
+		addToFollowers.push({username: user, userkey: authKey});
+	    })
+    }
+
     renderPost(post) {
         return (
             <div key={post[0].title}>
@@ -124,6 +150,7 @@ class ContentBase extends React.Component {
             return (
 	        <div>
 		    <button onClick={this.handleMessage}>Send Message</button>
+		    <button onClick={this.handleFollow}>Follow</button>
 		    <MessageForm firebase={this.props.firebase} authUser={this.props.authUser} otherUser={this.props.userKey}/>
 		    {this.state.posts.map( (post) => this.renderPost(post) )}
 	        </div>
@@ -164,16 +191,6 @@ class MessageForm extends React.Component {
 	    .then ( () => {
 	        this.setState({message: ''})
 	    });
-       /*
-        sendMessage.push({message: message, from: this.props.authUser.uid});
-
-	var saveMessage = this.props.firebase.messageSent(this.props.authUser.uid);
-	saveMessage.push({message: message, to: this.props.otherUser})
-            .then( () => {
-		this.setState({message: ''});
-	    });
-       event.preventDefault();
-       */
     }
 
     handleChange(event) {
