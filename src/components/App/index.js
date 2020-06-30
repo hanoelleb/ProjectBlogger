@@ -21,6 +21,10 @@ import {withFirebase} from '../../firebase';
 
 import { AuthUserContext } from '../Session';
 
+import styles from '../Styles/app.module.css';
+console.log('styles: ' + styles);
+
+
 class App extends React.Component {
    constructor(props) {
        super(props);
@@ -39,7 +43,7 @@ class App extends React.Component {
 
    render() {
      return (
-       <div>
+       <div className={styles.app}>
            <h1>App</ h1>
 	   <AuthUserContext.Provider value={this.state.authUser}>
                <Router>

@@ -5,8 +5,10 @@ import SignOut from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import {AuthUserContext} from '../Session'; 
 
+import styles from '../Styles/lists.module.css';
+
 const Navigation = ({authUser}) => (
-    <div>
+    <div className={styles.nav}>
 	<AuthUserContext.Consumer>
 	    {authUser => authUser ? <NavAuth /> : <NavNonAuth />}
         </AuthUserContext.Consumer>
@@ -37,7 +39,7 @@ const NavAuth = () => (
 const NavNonAuth = () => (
    <ul>
     <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
+      <Link to={ROUTES.LANDING}>Sign In</Link>
     </li>
     <li>
       <Link to={ROUTES.HOME}>Home</Link>

@@ -1,0 +1,60 @@
+
+.follow {
+    background-color: white;
+    color: black;
+}
+
+.follow h1 {
+    color: white;
+}
+
+.nav ul {
+    display: flex;
+}
+
+.nav li {
+    list-style: none;
+    margin: 5px;    
+}
+
+.nav a:link{
+    color: white;
+    text-decoration: none;
+}
+
+.nav a:visited{
+    color: white;
+    text-decoration: none;
+}
+
+.nav a:hover{
+    color: violet;
+    text-decoration: none;
+}
+
+
+.list ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.list li {
+    list-style: none;
+    margin: 5px;
+}
+
+.list a:link{
+    color: white;
+    text-decoration: none;
+}
+
+.list a:visited{
+    color: white;
+    text-decoration: none;
+}
+
+.list a:hover{
+    color: violet;
+    text-decoration: none;
+}
+

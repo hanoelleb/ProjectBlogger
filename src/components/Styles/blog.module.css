@@ -1,0 +1,67 @@
+.textPostForm {
+    display: flex;
+    flex-direction: column;
+    width: 33vw;
+    position: absolute;
+    left: 33vw;
+    top: 20vw;
+}
+
+.imagePostForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.postbuttons {
+    display: flex;
+    justify-content: center;
+}
+
+.tags {
+    margin: 1em;
+    color: gray;    
+}
+
+.post {
+    background-color: white;
+    border-radius: 15px;
+    color: black;
+    width: 40vw;
+    margin-bottom: 10px;
+}
+
+.blog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.nav ul {
+    display: flex;
+}
+
+.nav li {
+    list-style: none;
+    margin: 5px;
+}
+
+.nav a:link{
+    color: white;
+    text-decoration: none;
+}
+
+.nav a:visited{
+    color: white;
+    text-decoration: none;
+}
+
+.nav a:hover{
+    color: violet;
+    text-decoration: none;
+}

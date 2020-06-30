@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { withAuthorization } from '../Session';
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
+import styles from '../Styles/lists.module.css';
+import DashNav from '../DashNavigation';
 
 class Message extends React.Component {
     constructor(props) {
@@ -15,6 +17,7 @@ class Message extends React.Component {
 	console.log('in message: ' + messageKey + ' is sent: ' + isSent);
         return (
 	<div>
+	    < DashNav />
             <AuthUserContext.Consumer> 
 	        { authUser => 
                     <MessagePage authUser={authUser} messageKey={messageKey} isSent={isSent}/>
@@ -64,7 +67,7 @@ class MessagePageBase extends React.Component {
 	var link = this.renderLink();
         if (this.props.isSent) {
             return (
-		<div>
+		<div className={styles.list}>
 		    <h3>To:
 		        {this.renderLink()}
 		    </h3>
@@ -74,7 +77,7 @@ class MessagePageBase extends React.Component {
 	}
 	else {
             return (
-		 <div>
+		 <div className={styles.list}>
 	              <h3>From: 
 		          {this.renderLink()}
 		      </h3>

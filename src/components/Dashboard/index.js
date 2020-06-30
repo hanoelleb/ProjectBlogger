@@ -5,36 +5,24 @@ import { withFirebase } from '../../firebase';
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session'
 import { withAuthorization } from '../Session';
+import DashNav from '../DashNavigation';
 
 import {PostFactory} from '../../models/Post';
 //search bar
 //navbar - explore, messages, followers, notifications, account
 //posts
+import styles from '../Styles/blog.module.css';
 
 const Dashboard = () => (
     <div>
 	<div>
 	    <input type='text' placeholder='Search Soapbox'></input>
 	</div>
-	<div>
-	    <ul>
-	        <li><Link to={ROUTES.EXPLORE}>Explore</Link></li>
-                <li><Link to={ROUTES.MESSAGES}>Messages</Link></li>
-                <li><Link to={ROUTES.FOLLOWERS}>Followers</Link></li>
-	        <li><Link to={ROUTES.FOLLOWING}>Following</Link></li>
-                <li><Link to={ROUTES.NOTIFICATIONS}>Notifications</Link></li>
-                <li>Settings</li>
-            </ul>
-	</div>
-        <div>
-	    <button>Text Post</button>
+        < DashNav />
+	<div className={styles.postbuttons}>
             <button>Photo Post</button>
-	</div>
-	<div>
-	    <AuthUserContext.Consumer>
-	        {authUser => <PostForm user={authUser} />}
-	    </AuthUserContext.Consumer>
-	</div>
+	    <NewPostButton />
+        </div>
 	<div>
 	    <AuthUserContext.Consumer>
 	        {authUser => <Content user={authUser} />}
@@ -43,11 +31,42 @@ const Dashboard = () => (
     </div>
 );
 
+class NewPostButton extends React.Component {
+    constructor(props) {
+        super(props);
+	this.openForm = this.openForm.bind(this);
+	this.closeForm = this.closeForm.bind(this);
+	this.state = ({ on: false });
+    }
+
+    openForm () {
+        this.setState({on: true});
+    }
+
+    closeForm () {
+        this.setState({on: false});
+    }
+
+    render() {
+        return (
+	    <div>
+	        <button onClick={this.openForm}>Text Post</button>
+                <div>
+                    <AuthUserContext.Consumer>
+                         {authUser => <PostForm user={authUser} on={this.state.on} handler={this.closeForm}/>}
+                    </AuthUserContext.Consumer>
+                </div>
+            </div>
+	)
+    }
+}
+
 class PostFormBase extends React.Component {
     constructor(props) {
         super(props);
 	this.handleSubmit = this.handleSubmit.bind(this);
 	this.handleChange = this.handleChange.bind(this);
+	this.handleCancel = this.handleCancel.bind(this);
 	this.state = ({title: '', content: '', tags: ''});
     }
 
@@ -57,7 +76,7 @@ class PostFormBase extends React.Component {
 	
 	this.props.firebase.posts(this.props.user.uid).push({title: post.title, content : post.content, tags: post.tags})
 	    .then( () => {
-                this.setState({title: '', content: '', tags: ''});
+                this.setState({title: '', content: '', tags: '', on: false});
             });
 	
 	event.preventDefault();
@@ -67,15 +86,24 @@ class PostFormBase extends React.Component {
         this.setState({[event.target.name] : event.target.value});
     }
 
+    handleCancel() {
+        this.setState({title: '', content: '', tags: '', on: false});
+    }
+
     render() {
+	if (this.props.on) {
         return (
-	    <form onSubmit={this.handleSubmit}>
-	        <input name='title' type='text' placeholder='Title' onChange={this.handleChange}></input>
-	        <textarea name='content' onChange={this.handleChange}></textarea>
-		<input name='tags' type='text' placeholder='separate, tags, with, commas' onChange={this.handleChange}></input>
-		<input type='submit' value='Post'></input>
-	    </form>
-	)
+	        <form className={styles.textPostForm} id='textPostForm' onSubmit={this.handleSubmit}>
+	            <input name='title' type='text' placeholder='Title' value={this.state.title} onChange={this.handleChange}></input>
+	            <textarea name='content' value={this.state.content} onChange={this.handleChange}></textarea>
+		    <input name='tags' type='text' placeholder='separate, tags, with, commas' value={this.state.tags} onChange={this.handleChange}></input>
+		    <input type='submit' value='Post'></input>
+		    <button onClick={() => { this.handleCancel(); this.props.handler()} }>Cancel</button>
+	        </form>
+	)}
+	else {
+	    return null;
+	}
     }
 }
 
@@ -141,7 +169,7 @@ class ContentBase extends React.Component {
 
     renderPost(post) {
         return (
-	    <div key={post.title}>
+	    <div className={styles.post} key={post.title}>
 	        <h1>{post.title}</h1>
 		{ post.src ? <h3>src: {this.renderBlogLink(post.src, post.srckey)}</h3> : null }
 	        <p>{post.content}</p>
@@ -151,7 +179,7 @@ class ContentBase extends React.Component {
     }
 
     addTag(tag,index) {
-        return <span key={index}>{tag}</span>
+        return <span className={styles.tags} key={index}>{tag}</span>
     }
 
     render() {
@@ -163,7 +191,7 @@ class ContentBase extends React.Component {
 	    )
 	} else {
 	    return (   
-	       <div id='Posts'>
+	       <div id='Posts' className={styles.blog}>
                    <h2>Your posts</h2>
 		   {this.state.posts.map( (post) => this.renderPost(post) )}
                </div>

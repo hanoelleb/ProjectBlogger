@@ -3,13 +3,18 @@ import {withAuthorization} from '../Session';
 import {AuthUserContext} from '../Session';
 import {Link} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
+import styles from '../Styles/lists.module.css';
+import DashNav from '../DashNavigation';
 
 const Messages = () => (
-    <AuthUserContext.Consumer>
-        { authUser => 	
-            <MessagesPage authUser={authUser}/>
-	}
-    </AuthUserContext.Consumer>
+    <div>
+	< DashNav /> 
+        <AuthUserContext.Consumer>
+            { authUser => 	
+                <MessagesPage authUser={authUser}/>
+	    }
+        </AuthUserContext.Consumer>
+    </div>
 )
 
 class MessagesPageBase extends React.Component {
@@ -64,7 +69,7 @@ class MessagesPageBase extends React.Component {
     
     render () {
         return (
-	    <div>
+	    <div className={styles.list}>
 	        <h1>Received</h1>
 		{this.state.received.map( (message) => this.renderReceivedLinks(message)) }
 	        <h1>Sent</h1>

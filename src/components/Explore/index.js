@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {withFirebase} from '../../firebase';
+import styles from '../Styles/lists.module.css';
+import DashNav from '../DashNavigation';
 
 const Explore = () => (
-    <ExplorePage />
+    <div>
+	< DashNav />
+        <ExplorePage />
+    </div>
 )
 
 class ExplorePageBase extends React.Component {
@@ -28,7 +33,7 @@ class ExplorePageBase extends React.Component {
 
     renderUserLink(userData) {
 	 var pathstr = '/blog/' + userData[0];
-         return <Link to={{pathname: pathstr, state: { key: userData[1] }}} >{userData[0]}</Link>
+         return <li><Link to={{pathname: pathstr, state: { key: userData[1] }}} >{userData[0]}</Link></li>
     }
 
     render() {
@@ -36,9 +41,11 @@ class ExplorePageBase extends React.Component {
             return <div>Explore</div>
 	else {
 	    return (
-	        <div>
+	        <div className={styles.list}>
 		    <div>Explore</div>
-		    {this.state.users.map( (userData) => this.renderUserLink(userData)) }
+		    <ul>
+		         {this.state.users.map( (userData) => this.renderUserLink(userData)) }
+		    </ul>
 	        </div>
 	    )
 	}

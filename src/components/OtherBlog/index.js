@@ -2,8 +2,10 @@ import React from 'react';
 import {withFirebase} from '../../firebase';
 import  { FirebaseContext } from '../../firebase';
 import { AuthUserContext } from '../Session'
- import { withAuthorization } from '../Session'
+import { withAuthorization } from '../Session'
 import {PostFactory} from '../../models/Post';
+
+import styles from '../Styles/blog.module.css';
 
 class Other extends React.Component {
     constructor(props) {
@@ -13,7 +15,6 @@ class Other extends React.Component {
 
     componentDidMount() {
          const aux = this.props.location.state;
-	 //console.log(aux.key);
     }
 
     renderContent() {
@@ -81,7 +82,6 @@ class ContentBase extends React.Component {
     }
 
     handleLike(postId) {
-        console.log('in like');
 	const key = this.props.userKey;
 	var likes = this.props.firebase.likes(key,postId);
 	likes.once('value')
@@ -112,10 +112,6 @@ class ContentBase extends React.Component {
         //add to following for current user
 	var addToFollowing = this.props.firebase.following(this.props.authUser.uid).push({username: this.state.user, userkey: this.props.userKey}); 
 
-	//add to followers for user of this blog
-	//var addToFollowers = this.props.firebase.followers(this.props.userKey).push({username: this.props.authUser.uid, ;
-	//console.log(this.props.authUser);
-	
 	var addToFollowers = this.props.firebase.followers(this.props.userKey);;
         
 	var getUser = this.props.firebase.user(this.props.authUser.uid);
@@ -129,7 +125,7 @@ class ContentBase extends React.Component {
 
     renderPost(post) {
         return (
-            <div key={post[0].title}>
+            <div className={styles.post} key={post[0].title}>
                 <h1>{post[0].title}</h1>
                 <p>{post[0].content}</p>
                 {post[0].tags.map( (tag,index) => this.addTag(tag,index))}
@@ -140,7 +136,7 @@ class ContentBase extends React.Component {
     } 
 
     addTag(tag,index) {
-        return <span key={index}>{tag}</span>
+        return <span className={styles.tags} key={index}>{tag}</span>
     }
 
     render() {
@@ -148,7 +144,7 @@ class ContentBase extends React.Component {
 	    return null;
 	else {
             return (
-	        <div>
+	        <div className={styles.blog}>
 		    <button onClick={this.handleMessage}>Send Message</button>
 		    <button onClick={this.handleFollow}>Follow</button>
 		    <MessageForm firebase={this.props.firebase} authUser={this.props.authUser} otherUser={this.props.userKey}/>
