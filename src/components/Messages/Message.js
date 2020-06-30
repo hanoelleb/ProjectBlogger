@@ -4,6 +4,7 @@ import { withAuthorization } from '../Session';
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import styles from '../Styles/lists.module.css';
+import messageStyle from '../Styles/blog.module.css';
 import DashNav from '../DashNavigation';
 
 class Message extends React.Component {
@@ -67,7 +68,7 @@ class MessagePageBase extends React.Component {
 	var link = this.renderLink();
         if (this.props.isSent) {
             return (
-		<div className={styles.list}>
+		<div className={messageStyle.post}>
 		    <h3>To:
 		        {this.renderLink()}
 		    </h3>
@@ -77,7 +78,7 @@ class MessagePageBase extends React.Component {
 	}
 	else {
             return (
-		 <div className={styles.list}>
+		 <div className={messageStyle.post}>
 	              <h3>From: 
 		          {this.renderLink()}
 		      </h3>
@@ -90,7 +91,7 @@ class MessagePageBase extends React.Component {
     render() {
         return (
 	    <div>
-	    <Link to={ROUTES.MESSAGES}>Back to Messages</Link>
+	    <Link to={ROUTES.MESSAGES} style={{color: 'white'}}>Back to Messages</Link>
 	    {this.renderMessage()}
 	    </div>
 	)

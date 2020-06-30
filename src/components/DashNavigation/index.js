@@ -6,6 +6,7 @@ import styles from '../Styles/blog.module.css'
 const DashNav = () => (
         <div className={styles.nav}>
             <ul>
+	        <li><Link to={ROUTES.DASHBOARD}>Dashboard</Link></li>
                 <li><Link to={ROUTES.EXPLORE}>Explore</Link></li>
                 <li><Link to={ROUTES.MESSAGES}>Messages</Link></li>
                 <li><Link to={ROUTES.FOLLOWERS}>Followers</Link></li>

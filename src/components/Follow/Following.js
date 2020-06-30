@@ -4,6 +4,7 @@ import {withAuthorization} from '../Session';
 import {AuthUserContext} from '../Session';
 import * as ROUTES from '../../constants/routes';
 import DashNav from '../DashNavigation';
+import styles from '../Styles/lists.module.css'
 
 const Following = () => (
     <div>
@@ -43,9 +44,11 @@ class FollowingPageBase extends React.Component {
 
     render() {
         return (
-            <div id='Following'>
+            <div className={styles.list}>
                 <h3>Following</h3>
+		<ul>
                 {this.state.follow.map( (following) => this.renderFollowingLink(following) ) }
+		</ul>
             </div>
         )
     }
