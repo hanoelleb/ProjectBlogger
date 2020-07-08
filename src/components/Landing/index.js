@@ -10,7 +10,7 @@ const Landing = () => (
   <div className = {styles.page}>
     <SignInForm />    
     <h6>Don't have an account? 
-	<Link to={ROUTES.SIGN_UP} style={{color: 'white'}}> Sign up!</Link>
+	<Link to={ROUTES.SIGN_UP} style={{color: 'white', textDecoration: 'none'}}> Sign up!</Link>
     </h6>
   </div>
 );

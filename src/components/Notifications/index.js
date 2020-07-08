@@ -1,9 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {withAuthorization} from '../Session';
+import DashNav from '../DashNavigation';
 
 const Notifications = () => (
-    < NotifPage />
+    <div>
+        <DashNav />
+        < NotifPage />
+    </div>
 )
 
 class NotifPageBase extends React.Component {

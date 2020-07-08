@@ -5,7 +5,7 @@
     position: fixed;
     left: 33vw;
     top: 20vw;
-    background-color: white;
+    background-color: peachpuff;
     align-items: center;
     border-radius: 5px;
 }
@@ -13,6 +13,11 @@
 .textPostForm input {
     width: 80%;
     margin: 5px;
+}
+
+.textPostForm input[type='submit'] {
+    background-color: transparent;
+    border: none;
 }
 
 .textPostForm textarea {
@@ -60,6 +65,15 @@
     align-items: center;
 }
 
+.blog button {
+    background-color: lightsteelblue;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+}
+
 .nav {
     position: fixed;
     top: 0;
@@ -98,3 +112,20 @@
     color: violet;
     text-decoration: none;
 }
+
+.messageForm {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    background-color: white;
+    align-items: center;
+    border-radius: 5px;
+    color: black;
+    padding: 20px;
+}
+
+.messageForm button {
+    color: black;
+    background-color: transparent;
+}
+

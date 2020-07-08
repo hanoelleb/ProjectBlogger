@@ -104,10 +104,6 @@ class ContentBase extends React.Component {
             });
     }
 
-    handleMessage() {
-    
-    }
-
     handleFollow() {
         //add to following for current user
 	var addToFollowing = this.props.firebase.following(this.props.authUser.uid).push({username: this.state.user, userkey: this.props.userKey}); 
@@ -145,13 +141,39 @@ class ContentBase extends React.Component {
 	else {
             return (
 	        <div className={styles.blog}>
-		    <button onClick={this.handleMessage}>Send Message</button>
+		    <MessageButton firebase={this.props.firebase} authUser={this.props.authUser} otherUser={this.props.userKey} />
 		    <button onClick={this.handleFollow}>Follow</button>
-		    <MessageForm firebase={this.props.firebase} authUser={this.props.authUser} otherUser={this.props.userKey}/>
 		    {this.state.posts.map( (post) => this.renderPost(post) )}
 	        </div>
 	    )
 	}
+    }
+}
+
+class MessageButton extends React.Component {
+    constructor(props) {
+        super(props);
+	this.openForm = this.openForm.bind(this);
+	this.closeForm = this.closeForm.bind(this);
+        this.state = ({on: false});
+    }
+
+    openForm() {
+        this.setState({on: true});
+    }
+
+    closeForm() {
+        this.setState({on: false});
+    }
+
+    render() {
+        return (
+	    <div>
+		<button onClick={this.openForm}>Send Message</button>
+                < MessageForm firebase={this.props.firebase} authUser={this.props.authUser} 
+		      otherUser={this.props.otherUser} handler={this.closeForm} on={this.state.on}/>
+	    </div>
+	)
     }
 }
 
@@ -195,13 +217,15 @@ class MessageForm extends React.Component {
 
     render() {
 	const invalid = this.state.message === '';
-
+        if (this.props.on) {
         return (
-	    <form onSubmit={this.handleSubmit}>
+	    <form className={styles.messageForm} onSubmit={this.handleSubmit}>
                 <textarea name='message' placeholder='Enter message' value={this.state.message} onChange={this.handleChange}></textarea>
 		<input type='submit' value='Send' disabled={invalid}></input>
+		<button onClick={this.props.handler}>Cancel</button>
 	    </form>
-	)
+	) } 
+	else { return null; }
     }
 }
 

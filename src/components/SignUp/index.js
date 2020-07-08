@@ -6,11 +6,13 @@ import * as ROUTES from '../../constants/routes';
 
 import { AuthUserContext } from '../Session'
 
+import styles from '../Styles/landing.module.css';
+
 const SignUp = () => (
-    <div>
+    <div className= {styles.page}>
         <SignUpForm />
 	<h6>Already have an account? 
-	    <Link to={ROUTES.LANDING}> Sign in!</Link>
+	    <Link to={ROUTES.LANDING} style={{color: 'white', textDecoration: 'none'}}> Sign in!</Link>
 	</h6>
     </div>
 )
@@ -55,7 +57,8 @@ class SignUpFormBase extends React.Component {
         const isInvalid = this.state.email === '' || this.state.username === '' 
 		    || this.state.password === '' || this.state.password !== this.state.pwconfirm;
         return (
-            <form onSubmit = {this.handleSignUp}>
+            <form className={styles.form} onSubmit = {this.handleSignUp}>
+		<h3>Sign up</h3>
                 <input name='email' value={this.state.email} type='email' 
 		    placeholder='Email' onChange={this.handleChange}></input>
                 <input name='username' value={this.state.username} type='text' 
